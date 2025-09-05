@@ -1,17 +1,16 @@
 import streamlit as st
 import pandas as pd
-import joblib
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import IsolationForest
 
 # -----------------------------
-# Load or Train Models
+# Load and Train Models
 # -----------------------------
 @st.cache_resource
 def load_models():
-    # Load dataset to retrain quickly (or load pre-saved models if you dumped them)
-    df = pd.read_csv("card_transdata.csv")
+    # Load the sample dataset
+    df = pd.read_csv("card_transdata_sample.csv")
     X = df.drop("fraud", axis=1)
     y = df["fraud"]
 
@@ -23,8 +22,9 @@ def load_models():
     log_reg = LogisticRegression(max_iter=1000, class_weight="balanced", solver="liblinear")
     log_reg.fit(X_scaled, y)
 
-    # Train Isolation Forest (fraud rate ≈ 0.09)
-    iso_forest = IsolationForest(contamination=0.09, random_state=42)
+    # Train Isolation Forest (fraud rate in sample)
+    fraud_rate = y.sum() / len(y)
+    iso_forest = IsolationForest(contamination=fraud_rate, random_state=42)
     iso_forest.fit(X_scaled)
 
     return scaler, log_reg, iso_forest
@@ -35,7 +35,7 @@ scaler, log_reg, iso_forest = load_models()
 # Streamlit UI
 # -----------------------------
 st.title("Credit Card Fraud Detection App")
-st.write("Enter transaction details below and check if it’s likely fraud or legit.")
+st.write("Enter transaction details below to check if it is likely fraud or legitimate.")
 
 # Input form
 with st.form("fraud_form"):
@@ -73,13 +73,13 @@ if submitted:
     iso_pred = 1 if iso_pred == -1 else 0  # map -1 → fraud, 1 → legit
 
     # Display results
-    st.subheader("🔍 Predictions:")
+    st.subheader("Predictions:")
     if lr_pred == 1:
-        st.error(f"Logistic Regression: FRAUD DETECTED! (Probability: {lr_prob:.2f})")
+        st.error(f"Logistic Regression: FRAUD DETECTED (Probability: {lr_prob:.2f})")
     else:
-        st.success(f"Logistic Regression: Legit transaction (Fraud probability: {lr_prob:.2f})")
+        st.success(f"Logistic Regression: Legitimate transaction (Fraud probability: {lr_prob:.2f})")
 
     if iso_pred == 1:
-        st.error("Isolation Forest: FRAUD DETECTED!")
+        st.error("Isolation Forest: FRAUD DETECTED")
     else:
-        st.success("Isolation Forest: Legit transaction")
+        st.success("Isolation Forest: Legitimate transaction")
