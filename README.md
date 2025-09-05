@@ -27,7 +27,7 @@ The models are trained and evaluated in Google Colab using the [Credit Card Frau
 
 You can open and run the notebook directly in Google Colab:
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]([(https://colab.research.google.com/drive/118vPUxDSKkB8ygt09S_PkVJnHgB8W9jJ#scrollTo=-nxEZcYo0mn-)])
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/118vPUxDSKkB8ygt09S_PkVJnHgB8W9jJ#scrollTo=WIgS9LBg39C1)
 
 Steps:
 
