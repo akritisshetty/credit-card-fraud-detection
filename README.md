@@ -2,6 +2,7 @@
 
 This project applies machine learning techniques to detect fraudulent credit card transactions.
 The models are trained and evaluated in Google Colab using the [Credit Card Fraud dataset](https://www.kaggle.com/datasets/dhanushnarayananr/credit-card-fraud).
+Live Demo: [Check it out here](https://credit-card-fraud-detection-python.streamlit.app/)
 
 ---
 
